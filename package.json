@@ -19,6 +19,12 @@
   },
   "homepage": "https://github.com/YevBor/movies-explorer-api#readme",
   "dependencies": {
-    "mongoose": "^5.13.7"
+    "bcrypt": "^5.0.1",
+    "bcryptjs": "^2.4.3",
+    "celebrate": "^15.0.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.13.7",
+    "nodemon": "^2.0.12",
+    "validator": "^13.6.0"
   }
 }
