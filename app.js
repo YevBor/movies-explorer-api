@@ -16,6 +16,7 @@ const NotFoundError = require('./errors/not-found-err');
 const app = express();
 
 const { PORT = 3000 } = process.env;
+const { BASE_URL, NODE_ENV } = process.env;
 
 const mongoDbUrl = 'mongodb://localhost:27017/bitfilmsdb';
 const mongooseConnectOptions = {
@@ -25,7 +26,7 @@ const mongooseConnectOptions = {
   useUnifiedTopology: true,
 };
 
-mongoose.connect(mongoDbUrl, mongooseConnectOptions);
+mongoose.connect(NODE_ENV === 'production' ? BASE_URL : mongoDbUrl, mongooseConnectOptions);
 
 // app.use((req, res, next) => {
 //   res.header('Access-Control-Allow-Origin', '*');
