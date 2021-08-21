@@ -8,7 +8,6 @@ const usersRouter = require('./routes/users');
 const moviesRouter = require('./routes/movies');
 const { createUser, login } = require('./controllers/users');
 
-const { celebrate, Joi } = require('celebrate');
 
 const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
