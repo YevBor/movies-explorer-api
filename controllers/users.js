@@ -1,8 +1,8 @@
 const bcrypt = require('bcryptjs');
-// const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
-// const { NODE_ENV, JWT_SECRET } = process.env;
+const { NODE_ENV, JWT_SECRET } = process.env;
 
 const NotFoundError = require('../errors/not-found-err');
 const BadRequestError = require('../errors/bad-request-err');
@@ -76,22 +76,22 @@ const createUser = (req, res, next) => {
     .catch(next);
 };
 
-// const login = (req, res, next) => {
-//   const { email, password } = req.body;
-//   return User.findUserByCredentials(email, password)
-//     .then((user) => {
-//       const token = jwt.sign(
-//         { _id: user._id },
-//         NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
-//         { expiresIn: '7d' },
-//       );
-//       return res.send({ jwt: token });
-//     })
-//     .catch(() => {
-//       throw new UnauthorizedError('Не удалось авторизироваться');
-//     })
-//     .catch(next);
-// };
+const login = (req, res, next) => {
+  const { email, password } = req.body;
+  return User.findUserByCredentials(email, password)
+    .then((user) => {
+      const token = jwt.sign(
+        { _id: user._id },
+        NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+        { expiresIn: '7d' },
+      );
+      return res.send({ jwt: token });
+    })
+    .catch(() => {
+      throw new UnauthorizedError('Не удалось авторизироваться');
+    })
+    .catch(next);
+};
 
 const updateProfile = (req, res, next) => {
   const { name, email } = req.body;
@@ -128,6 +128,6 @@ const updateProfile = (req, res, next) => {
 module.exports = {
   createUser,
   updateProfile,
-  // login,
+  login,
   getMe,
 };
