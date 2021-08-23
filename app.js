@@ -3,13 +3,9 @@ const express = require('express');
 
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const { errors, celebrate, Joi } = require('celebrate');
-const usersRouter = require('./routes/users');
-const moviesRouter = require('./routes/movies');
-const { createUser, login } = require('./controllers/users');
+const { errors } = require('celebrate');
+const indexRouter = require('./routes/index');
 
-
-const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const NotFoundError = require('./errors/not-found-err');
 
@@ -41,30 +37,7 @@ mongoose.connect(NODE_ENV === 'production' ? BASE_URL : mongoDbUrl, mongooseConn
 app.use(bodyParser.json());
 app.use(requestLogger);
 
-app.post('/signup', celebrate({
-  body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
-    email: Joi.string().email().required(),
-    password: Joi.string().required(),
-  }),
-}), createUser);
-
-app.post('/signin', celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().email().required(),
-    password: Joi.string().required(),
-  }),
-}), login);
-
-// авторизация
-app.use(auth);
-
-app.use('/users', usersRouter);
-app.use('/', moviesRouter);
-
-app.use('*', () => {
-  throw new NotFoundError('Запрашиваемый ресурс не найден');
-});
+app.use(indexRouter);
 
 app.use(errorLogger);
 app.use(errors());

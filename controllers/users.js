@@ -107,6 +107,9 @@ const updateProfile = (req, res, next) => {
       if (err.name === 'CastError') {
         throw new BadRequestError('Невалидные данные');
       }
+      else if (err.name === 'MongoError' || err.code === '11000') {
+        throw new ConflictError('Такой емейл уже зарегистрирован');
+      } else next(err);
     })
     .catch(next);
 };
