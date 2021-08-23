@@ -1,9 +1,10 @@
 const express = require('express');
-const validator = require('validator');
 
 const { celebrate, Joi } = require('celebrate');
 const auth = require('../middlewares/auth');
-const { login, createUser} = require('../controllers/users');
+const { login, createUser } = require('../controllers/users');
+
+const NotFoundError = require('../errors/not-found-err');
 
 const usersRouter = require('./users');
 const moviesRouter = require('./movies');
@@ -12,7 +13,7 @@ const indexRouter = express.Router();
 
 indexRouter.post('/signup', celebrate({
   body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
+    name: Joi.string().required().min(2).max(30),
     email: Joi.string().email().required(),
     password: Joi.string().required(),
   }),
@@ -34,6 +35,5 @@ indexRouter.use('/', moviesRouter);
 indexRouter.use('*', () => {
   throw new NotFoundError('Запрашиваемый ресурс не найден');
 });
-
 
 module.exports = indexRouter;

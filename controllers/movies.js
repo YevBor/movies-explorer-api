@@ -10,15 +10,40 @@ const getMovies = (req, res, next) => Movie.find({})
   .catch(next);
 
 const createMovie = (req, res, next) => {
-  const { country, director, duration, year, description, image, trailer, nameRU, nameEN, thumbnail, movieId } = req.body;
+  const {
+    country,
+    director,
+    duration,
+    year,
+    description,
+    image,
+    trailer,
+    nameRU,
+    nameEN,
+    thumbnail,
+    movieId,
+  } = req.body;
   const owner = req.user._id;
-// const owner = "611f6e0b938bb7233fdc1a4e";
-  Movie.create({ country, director, duration, year, description, image, trailer, nameRU, nameEN, thumbnail, movieId, owner })
+  // const owner = "611f6e0b938bb7233fdc1a4e";
+  Movie.create({
+    country,
+    director,
+    duration,
+    year,
+    description,
+    image,
+    trailer,
+    nameRU,
+    nameEN,
+    thumbnail,
+    movieId,
+    owner,
+  })
     .then((movie) => res.send({ data: movie }))
     .catch((err) => {
       if (err.name === 'ValidationError' || err.name === 'CastError') {
         throw new BadRequestError('Данные не прошли валидацию');
-      }
+      } else next(err);
     })
     .catch(next);
 };
@@ -30,15 +55,16 @@ const deleteMovie = (req, res, next) => {
     .orFail(() => new NotFoundError('Карточка с таким id не найдена'))
     .then((movie) => {
       if (!movie.owner.equals(owner)) {
-        next(new ForbiddenError('Нельзя удалить чужую карточку'));
+        throw new ForbiddenError('Нельзя удалить чужую карточку');
       } else {
         Movie.deleteOne(movie)
-          .then(() => res.status(200).send({ message: 'Карточка удалена' }));
+          .then(() => res.status(200).send({ message: 'Карточка удалена' }))
+          .catch(next);
       }
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new BadRequestError('Данные не прошли валидацию'));
+        throw new BadRequestError('Данные не прошли валидацию');
       }
       throw err;
     })

@@ -1,4 +1,4 @@
-// require('dotenv').config();
+require('dotenv').config();
 const express = require('express');
 
 const bodyParser = require('body-parser');
@@ -7,7 +7,6 @@ const { errors } = require('celebrate');
 const indexRouter = require('./routes/index');
 
 const { requestLogger, errorLogger } = require('./middlewares/logger');
-const NotFoundError = require('./errors/not-found-err');
 
 const app = express();
 

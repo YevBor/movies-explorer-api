@@ -9,40 +9,7 @@ const BadRequestError = require('../errors/bad-request-err');
 const ConflictError = require('../errors/conflict-err');
 const UnauthorizedError = require('../errors/unauthorized-err');
 
-
-// const getProfile = (req, res, next) => {
-//   User.findById(req.params.userId)
-//     .then((user) => {
-//       if (!user) {
-//         throw new NotFoundError('Нет пользователя с таким id');
-//       }
-//       return res.status(200).send({ data: user });
-//     })
-//     .catch((err) => {
-//       if (err.name === 'CastError') {
-//         throw new BadRequestError('Невалидный id');
-//       }
-//       throw err;
-//     })
-//     .catch(next);
-// };
-
 const getMe = (req, res, next) => {
-  // const { authorization } = req.headers;
-  // const token = authorization.replace('Bearer ', '');
-
-  // const isAuthorized = () => {
-  //   try {
-  //     return jwt.verify(token, JWT_SECRET);
-  //   } catch (err) {
-  //     return false;
-  //   }
-  // };
-
-  // if (!isAuthorized(token)) {
-  //   throw new ForbiddenError('Доступ запрещен');
-  // }
-
   User.findById(req.user._id)
     .then((user) => {
       if (!user) {
@@ -54,7 +21,6 @@ const getMe = (req, res, next) => {
 };
 
 const createUser = (req, res, next) => {
-  console.log(req);
   const {
     name, email, password,
   } = req.body;
@@ -106,27 +72,12 @@ const updateProfile = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'CastError') {
         throw new BadRequestError('Невалидные данные');
-      }
-      else if (err.name === 'MongoError' || err.code === '11000') {
+      } else if (err.name === 'MongoError' || err.code === '11000') {
         throw new ConflictError('Такой емейл уже зарегистрирован');
       } else next(err);
     })
     .catch(next);
 };
-
-// const updateAvatar = (req, res, next) => {
-//   const { avatar } = req.body;
-//   const owner = req.user._id;
-
-//   return User.findByIdAndUpdate(owner, { avatar }, { new: true })
-//     .then((user) => {
-//       if (!user) {
-//         next(new NotFoundError('Нет пользователя с таким id'));
-//       }
-//       res.send(user);
-//     })
-//     .catch(next);
-// };
 
 module.exports = {
   createUser,
