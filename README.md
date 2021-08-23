@@ -2,4 +2,4 @@
 
 https://api.movie-search.nomoredomains.club/
 
-178.154.228.145
+адрес сервера:   178.154.228.145
