@@ -17,8 +17,8 @@ const movieSchema = new mongoose.Schema({
   description: {
     type: String,
     required: true,
-    minlength: 2,
-    maxlength: 200,
+    // minlength: 2,
+    // maxlength: 200,
   },
   nameRU: {
     type: String,
