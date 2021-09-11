@@ -4,21 +4,15 @@ const validator = require('validator');
 const movieSchema = new mongoose.Schema({
   country: {
     type: String,
-    required: true,
-    minlength: 2,
-    maxlength: 30,
+    required: [true, 'Поле "country" должно быть заполнено'],
   },
   director: {
     type: String,
-    required: true,
-    minlength: 2,
-    maxlength: 50,
+    required: [true, 'Поле "director" должно быть заполнено'],
   },
   description: {
     type: String,
-    required: true,
-    // minlength: 2,
-    // maxlength: 200,
+    required: [true, 'Поле "description" должно быть заполнено'],
   },
   nameRU: {
     type: String,
@@ -34,15 +28,15 @@ const movieSchema = new mongoose.Schema({
   },
   duration: {
     type: Number,
-    required: true,
+    required: [true, 'Поле "duration" должно быть заполнено'],
   },
   year: {
     type: String,
-    required: true,
+    required: [true, 'Поле "year" должно быть заполнено'],
   },
   movieId: {
     type: Number,
-    required: true,
+    required: [true, 'Поле "movieId" должно быть заполнено'],
   },
   image: {
     type: String,
