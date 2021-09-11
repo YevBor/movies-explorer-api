@@ -15,7 +15,7 @@ const getMe = (req, res, next) => {
       if (!user) {
         next(new NotFoundError('Нет пользователя с таким id'));
       }
-      return res.status(200).send({ data: user });
+      return res.status(200).send({user});
     })
     .catch(next);
 };
